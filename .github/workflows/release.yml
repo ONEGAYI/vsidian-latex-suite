@@ -1,0 +1,99 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 已有 GitHub Release 的版本标签，例如 v0.1.0
+        required: true
+        type: string
+
+concurrency:
+  group: release-${{ inputs.tag || github.ref_name }}
+  cancel-in-progress: false
+
+permissions: {}
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  release:
+    if: github.event_name == 'push' && !github.event.deleted
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      actions: read
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+      - name: 校验标签和版本说明
+        run: |
+          if ! git merge-base --is-ancestor HEAD refs/remotes/origin/main; then
+            echo '::error::发布标签必须指向已合入 main 的提交。'
+            exit 1
+          fi
+          node scripts/release-notes.mjs "$GITHUB_REF_NAME" > "$RUNNER_TEMP/release-notes.md"
+      - name: 用同一提交经 CI 验证的 VSIX 创建 Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          commit=$(git rev-parse HEAD)
+          run_id=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow ci.yml \
+            --branch main --commit "$commit" --status success --limit 20 \
+            --json databaseId,event \
+            --jq '[.[] | select(.event == "push" or .event == "workflow_dispatch")][0].databaseId // empty')
+          if [[ -z "$run_id" ]]; then
+            echo "::error::找不到提交 $commit 在 main 上成功的 CI。请先完成 CI，再重跑本任务。"
+            exit 1
+          fi
+          gh run download "$run_id" --repo "$GITHUB_REPOSITORY" --name release-vsix --dir "$RUNNER_TEMP/vsix"
+          asset="$RUNNER_TEMP/vsidian-latex-suite-${GITHUB_REF_NAME#v}.vsix"
+          mv -- "$RUNNER_TEMP/vsix/extension.vsix" "$asset"
+          gh release create "$GITHUB_REF_NAME" "$asset" --repo "$GITHUB_REPOSITORY" --verify-tag \
+            --title "Vsidian Latex Suite $GITHUB_REF_NAME" --notes-file "$RUNNER_TEMP/release-notes.md"
+
+  marketplace:
+    needs: release
+    # 手动补发只从 main 启动，复用既有 Release，跳过上游打包路径。
+    if: ${{ !cancelled() && vars.MARKETPLACE_PUBLISH == 'true' &&
+      (needs.release.result == 'success' ||
+      (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')) }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
+    steps:
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+      - name: 下载指定正式 Release 的 VSIX
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [[ ! "$RELEASE_TAG" =~ ^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$ ]]; then
+            echo '::error::请输入 vX.Y.Z 格式的稳定版本标签。'
+            exit 1
+          fi
+          preview=$(gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" \
+            --json isDraft,isPrerelease --jq '.isDraft or .isPrerelease')
+          if [[ "$preview" != false ]]; then
+            echo '::error::只允许发布已有的正式 GitHub Release。'
+            exit 1
+          fi
+          asset="vsidian-latex-suite-${RELEASE_TAG#v}.vsix"
+          gh release download "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --pattern "$asset" --output extension.vsix
+      - name: 使用 OIDC 发布到 VS Code Marketplace
+        run: npx --yes @vscode/vsce@4.1.1 publish --oidc --packagePath extension.vsix
