@@ -1,0 +1,257 @@
+.ls-snippets {
+  --ls-edge: color-mix(in srgb, var(--vscode-foreground) 12%, transparent);
+  --ls-card: color-mix(in srgb, var(--vscode-foreground) 4%, var(--vscode-editor-background));
+  background: var(--ls-card);
+  border: 1px solid var(--ls-edge);
+  border-radius: 10px;
+  padding: 0 20px 12px;
+  margin-block: 12px;
+  color: var(--vscode-foreground);
+  container-type: inline-size;
+}
+
+.ls-snippets button, .ls-snippets input, .ls-snippets textarea {
+  box-sizing: border-box;
+  font: inherit;
+}
+
+.ls-snippets button {
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  padding: 6px 10px;
+  line-height: 1.4;
+}
+
+.ls-snippets button:disabled { cursor: default; opacity: .55; }
+.ls-snippets [hidden] { display: none; }
+
+.ls-snippets :is(button, textarea, input):focus-visible {
+  outline: 2px solid var(--vscode-focusBorder);
+  outline-offset: 2px;
+}
+
+.ls-snippet-head, .ls-snippet-detail-head, .ls-snippet-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.ls-snippet-head {
+  margin-inline: -20px;
+  padding: 12px 20px;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--ls-edge);
+}
+
+.ls-snippet-head h4 { margin: 0; font-size: 14px; font-weight: 600; }
+
+.ls-snippet-scope, .ls-snippet-hint, .ls-snippet-empty, .ls-snippet-status {
+  color: var(--vscode-descriptionForeground);
+  font-size: 13px;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+
+.ls-snippet-scope { margin-block: 10px 12px; }
+.ls-snippet-hint { margin-block: 7px 12px; }
+.ls-snippet-empty { padding-inline: 8px; }
+.ls-snippet-status { margin-block: 10px 0; min-height: 1.55em; }
+.ls-snippet-error { color: var(--vscode-errorForeground); }
+
+.ls-snippet-grid {
+  display: grid;
+  grid-template-columns: minmax(158px, 1fr) minmax(0, 2.1fr);
+  gap: 12px 16px;
+  align-items: start;
+}
+
+.ls-snippet-list, .ls-snippet-form { min-width: 0; }
+.ls-snippet-list {
+  border: 1px solid var(--ls-edge);
+  border-radius: 6px;
+  max-block-size: 272px;
+  padding: 2px;
+  overflow: auto;
+}
+
+.ls-snippet-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 2px;
+}
+.ls-snippet-row .ls-snippet-check { margin: 0 4px 0 6px; }
+.ls-snippet-check, .ls-snippet-selection input { accent-color: var(--vscode-button-background); }
+
+.ls-snippet-toolbar {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 8px 12px;
+  padding-block-end: 8px;
+  border-block-end: 1px solid var(--ls-edge);
+}
+.ls-snippet-selection, .ls-snippet-bulk {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 8px;
+}
+.ls-snippet-selection {
+  color: var(--vscode-descriptionForeground);
+  font-size: 13px;
+}
+.ls-snippet-selection label { display: flex; align-items: center; gap: 5px; }
+.ls-snippet-selection input { margin: 0; }
+.ls-snippet-count { min-inline-size: 12ch; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ls-snippets .ls-snippet-quiet {
+  padding: 0 4px;
+  color: var(--vscode-textLink-foreground, var(--vscode-foreground));
+  background: transparent;
+}
+.ls-snippets .ls-snippet-bulk button {
+  min-block-size: 26px;
+  padding: 3px 8px;
+  font-size: 13px;
+}
+.ls-snippets .ls-snippet-bulk :is(.ls-secondary, .ls-snippet-danger:disabled) {
+  border-color: var(--vscode-button-border, transparent);
+}
+.ls-snippets .ls-snippet-danger {
+  color: var(--vscode-errorForeground);
+  background: color-mix(in srgb, var(--vscode-errorForeground) 10%, transparent);
+  border-color: color-mix(in srgb, var(--vscode-errorForeground) 30%, transparent);
+}
+.ls-snippets .ls-snippet-danger:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--vscode-errorForeground) 18%, transparent);
+}
+.ls-snippets .ls-snippet-bulk .ls-snippet-danger:disabled {
+  color: var(--vscode-button-secondaryForeground);
+  background: var(--vscode-button-secondaryBackground);
+}
+
+.ls-snippet-dialog {
+  box-sizing: border-box;
+  width: min(420px, calc(100% - 32px));
+  padding: 16px 20px;
+  border: 1px solid var(--ls-edge);
+  border-radius: 10px;
+  background: var(--vscode-editorWidget-background, var(--ls-card));
+  color: var(--vscode-foreground);
+  box-shadow: 0 8px 24px var(--vscode-widget-shadow, transparent);
+}
+.ls-snippet-dialog::backdrop { background: color-mix(in srgb, var(--vscode-editor-background) 65%, transparent); }
+.ls-snippet-dialog h4 { margin: 0; font-size: 14px; }
+.ls-snippet-dialog p { overflow-wrap: anywhere; }
+.ls-snippet-dialog .ls-snippet-actions { justify-content: flex-end; }
+
+.ls-snippets .ls-snippet-rule {
+  width: 100%;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 6px 8px;
+  text-align: start;
+  color: var(--vscode-foreground);
+  background: transparent;
+}
+
+.ls-snippet-rule:hover { background: var(--vscode-list-hoverBackground); }
+.ls-snippet-rule[aria-pressed='true'] {
+  color: var(--vscode-list-activeSelectionForeground);
+  background: var(--vscode-list-activeSelectionBackground);
+}
+
+.ls-snippet-rule code, .ls-snippet-detail-head code {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: var(--vscode-editor-font-family, monospace);
+}
+.ls-snippet-rule small { margin-inline-start: auto; font-size: 11px; white-space: nowrap; }
+.ls-snippet-rule .ls-snippet-disabled { margin-inline-start: 0; }
+
+.ls-snippet-detail-head { margin-block: 0 8px; min-block-size: 32px; }
+.ls-snippet-detail-head code { min-width: 0; }
+.ls-snippet-enable { margin-inline-start: auto; white-space: nowrap; font-size: 13px; }
+.ls-snippet-enable input { vertical-align: middle; margin-inline: 0 6px; }
+.ls-snippet-tag { font-size: 11px; border: 1px solid var(--ls-edge); border-radius: 999px; padding: 1px 7px; }
+
+.ls-snippets :is(.ls-snippet-search, .ls-snippet-source) {
+  width: 100%;
+  color: var(--vscode-input-foreground);
+  background: var(--vscode-input-background);
+  border: 1px solid var(--vscode-input-border, var(--ls-edge));
+  border-radius: 2px;
+}
+.ls-snippets .ls-snippet-search { border-radius: 8px; padding: 6px 8px; }
+.ls-snippets .ls-snippet-source {
+  display: block;
+  min-block-size: 204px;
+  resize: vertical;
+  padding: 10px;
+  font: 13px/1.55 var(--vscode-editor-font-family, monospace);
+  tab-size: 2;
+}
+.ls-snippets .ls-snippet-source[aria-invalid='true'] { border-color: var(--vscode-errorForeground); }
+
+.ls-primary {
+  color: var(--vscode-button-foreground);
+  background: var(--vscode-button-background);
+}
+.ls-primary:hover:not(:disabled) { background: var(--vscode-button-hoverBackground, var(--vscode-button-background)); }
+.ls-secondary {
+  color: var(--vscode-button-secondaryForeground);
+  background: var(--vscode-button-secondaryBackground);
+}
+.ls-secondary:hover:not(:disabled) { background: var(--vscode-button-secondaryHoverBackground, var(--vscode-button-secondaryBackground)); }
+
+@container (max-width: 720px) {
+  .ls-snippet-toolbar { grid-template-columns: minmax(0, 1fr) auto; }
+  .ls-snippet-toolbar > .ls-snippet-search { grid-column: 1 / -1; }
+}
+
+@container (max-width: 600px) {
+  .ls-snippet-grid, .ls-snippet-toolbar { grid-template-columns: minmax(0, 1fr); }
+  .ls-snippet-list { max-block-size: 166px; }
+}
+
+.ls-feature-list { display: grid; }
+.ls-snippets .ls-feature-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  text-align: start;
+  color: var(--vscode-foreground);
+  padding: 10px 8px;
+  background: transparent;
+}
+.ls-feature-link + .ls-feature-link { border-top-color: var(--ls-edge); }
+.ls-feature-link:hover { background: var(--vscode-list-hoverBackground); }
+.ls-feature-link-body { font-size: 14px; font-weight: 500; }
+.ls-feature-hint { display: block; color: var(--vscode-descriptionForeground); font-size: 12px; font-weight: 400; }
+.ls-feature-arrow { font-size: 18px; color: var(--vscode-descriptionForeground); }
+.ls-feature-toolbar { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-block: 12px; }
+.ls-feature-toolbar button { border: 1px solid transparent; border-radius: 6px; padding: 6px 10px; font: inherit; cursor: pointer; }
+.ls-feature-title { margin: 0; font-size: 16px; font-weight: 600; }
+.ls-feature-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, .75fr);
+  align-items: center;
+  gap: 12px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--ls-edge);
+}
+.ls-feature-row input[type='checkbox'] { justify-self: end; width: auto; }
+.ls-feature-row textarea { resize: vertical; }
+.ls-feature-options .ls-snippet-actions { margin-top: 12px; }
+.ls-feature-files { margin-block: 12px; overflow-wrap: anywhere; }
+.ls-feature-files button + button { margin-inline-start: 7px; }
+@container (max-width: 460px) {
+  .ls-feature-row { display: flex; flex-wrap: wrap; justify-content: space-between; }
+}

@@ -1,0 +1,63 @@
+{
+  "name": "vsidian-latex-suite",
+  "publisher": "ONEGAYI",
+  "displayName": "%extension.displayName%",
+  "description": "%extension.description%",
+  "version": "0.1.0",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ONEGAYI/vsidian-latex-suite.git"
+  },
+  "engines": {
+    "vscode": "^1.82.3"
+  },
+  "extensionKind": [
+    "workspace"
+  ],
+  "extensionDependencies": [
+    "onegayi.vsidian"
+  ],
+  "activationEvents": [],
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "vsidian-addon",
+    "latex"
+  ],
+  "main": "./dist/extension.cjs",
+  "vsidianAddon": {
+    "manifestVersion": 1,
+    "api": "^1.1.0",
+    "experimental": {
+      "cm6": "^1.1.0",
+      "syntax": "^1.0.0",
+      "viewIdentity": "^1.0.0"
+    }
+  },
+  "scripts": {
+    "build": "node build.mjs",
+    "typecheck": "tsc --noEmit",
+    "compile": "npm run build && npm run typecheck",
+    "test": "node --test test/*.test.mjs",
+    "vendor:sdk": "node scripts/vendorSdkTypes.mjs",
+    "vendor:check": "node scripts/vendorSdkTypes.mjs --check",
+    "vscode:prepublish": "npm run compile",
+    "test:settings-ui": "node test/settings-browser.mjs",
+    "test:appearance": "node test/math-appearance-browser.mjs"
+  },
+  "devDependencies": {
+    "@codemirror/language": "6.12.4",
+    "@codemirror/state": "6.7.6",
+    "@codemirror/view": "6.43.13",
+    "@types/node": "22.20.4",
+    "@types/vscode": "1.82.0",
+    "acorn": "8.15.0",
+    "esbuild": "0.28.2",
+    "katex": "0.16.47",
+    "playwright": "1.62.1",
+    "typescript": "6.0.3"
+  },
+  "type": "module"
+}
