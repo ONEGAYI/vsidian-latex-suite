@@ -69,9 +69,10 @@
 * 已安装并启用 **Vsidian**（`onegayi.vsidian`）
 
 ### 安装步骤
-1. 下载本扩展的 `.vsix` 安装包。
-2. 在 VS Code 中打开命令面板（`Ctrl+Shift+P` / `Cmd+Shift+P`），执行 **Extensions: Install from VSIX…**，选择安装包即可。
-3. 打开任意 Markdown 笔记的 **Vsidian Live 编辑器**，键入 `dm` 或 `mk`，即刻体验极速公式录入。
+1. 在 VS Code 扩展面板搜索 `ONEGAYI.vsidian-latex-suite`，或从 [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=ONEGAYI.vsidian-latex-suite) 安装。
+2. 打开任意 Markdown 笔记的 **Vsidian Live 编辑器**，键入 `dm` 或 `mk`，即刻体验极速公式录入。
+
+如需离线安装，从 [GitHub Releases](https://github.com/ONEGAYI/vsidian-latex-suite/releases/latest) 下载 `.vsix`，在 VS Code 命令面板执行 **Extensions: Install from VSIX…** 并选择安装包。
 
 > **开关与设置入口**：Vsidian 设置 → **第三方组件** → **Latex Suite**。
 
