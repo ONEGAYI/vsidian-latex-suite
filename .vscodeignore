@@ -1,0 +1,16 @@
+.git*/**
+.gitignore
+.vscodeignore
+AGENTS.md
+CLAUDE.md
+build.mjs
+tsconfig.json
+src/**
+types/**
+tools/**
+scripts/**
+test/**
+out/**
+node_modules/**
+package-lock.json
+*.vsix

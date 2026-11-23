@@ -1,0 +1,25 @@
+.ls-bracket-0 { color: var(--vscode-editorBracketHighlight-foreground1, var(--vscode-symbolIcon-operatorForeground)); }
+.ls-bracket-1 { color: var(--vscode-editorBracketHighlight-foreground2, var(--vscode-symbolIcon-variableForeground)); }
+.ls-bracket-2 { color: var(--vscode-editorBracketHighlight-foreground3, var(--vscode-symbolIcon-functionForeground)); }
+.ls-bracket-3 { color: var(--vscode-editorBracketHighlight-foreground4, var(--vscode-symbolIcon-numberForeground)); }
+.ls-bracket-4 { color: var(--vscode-editorBracketHighlight-foreground5, var(--vscode-symbolIcon-stringForeground)); }
+.ls-bracket-5 { color: var(--vscode-editorBracketHighlight-foreground6, var(--vscode-symbolIcon-constantForeground)); }
+.ls-bracket-current { background: var(--vscode-editorBracketMatch-background, var(--vscode-editor-selectionBackground)); font-weight: 600; }
+.ls-math-dollar { color: var(--vscode-symbolIcon-operatorForeground, var(--vscode-textLink-foreground)); }
+.ls-math-glyph { color: var(--vscode-editor-foreground); }
+.cm-editor .cm-tooltip.ls-math-preview {
+  --ls-preview-bg: var(--vscode-editorHoverWidget-background, var(--vscode-editor-background));
+  --ls-preview-edge: var(--vscode-editorHoverWidget-border, var(--vscode-focusBorder));
+  max-inline-size: min(80vw, 50rem);
+  padding: 7px 12px;
+  border-radius: 6px;
+  color: var(--vscode-editorHoverWidget-foreground, var(--vscode-editor-foreground));
+  background: var(--ls-preview-bg);
+  border: 1px solid var(--ls-preview-edge);
+  box-shadow: 0 2px 8px var(--vscode-widget-shadow);
+}
+
+.cm-tooltip-above.ls-math-preview .cm-tooltip-arrow::before { border-top-color: var(--ls-preview-edge); }
+.cm-tooltip-above.ls-math-preview .cm-tooltip-arrow::after { border-top-color: var(--ls-preview-bg); }
+.cm-tooltip-below.ls-math-preview .cm-tooltip-arrow::before { border-bottom-color: var(--ls-preview-edge); }
+.cm-tooltip-below.ls-math-preview .cm-tooltip-arrow::after { border-bottom-color: var(--ls-preview-bg); }
