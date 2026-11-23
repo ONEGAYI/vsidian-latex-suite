@@ -78,7 +78,7 @@
 ---
 
 <details>
-<summary>🛠️ 开发者构建与移植说明（点击展开）</summary>
+<summary>🛠️ 开发者构建、发布与移植说明（点击展开）</summary>
 
 ### 从源码构建
 需要 Node.js 22.18+ 与 `vsce`：
@@ -91,6 +91,13 @@ vsce package --no-dependencies
 
 * 宿主集成验证：`node test/run-host.mjs <Vsidian源码目录> <Code.exe> <Vsidian扩展目录>`
 * 设置页与编辑器绘制测试：`npm run test:settings-ui` / `npm run test:appearance`（首次需先运行 `npx playwright install chromium`）
+
+### 自动发布
+GitHub Actions 在 PR 与 `main` 推送时运行单测、编译打包和 Chromium 回归。通过的 `main` 构建会保存 VSIX，发版时直接使用标签所指提交的那份产物。
+
+1. 发版前，在 [更新日志](CHANGELOG.md) 把当期内容移到 `## [X.Y.Z] - YYYY-MM-DD`，版本与 `package.json` 一致。合入 `main` 后等待该提交的 CI 通过，再推送 `vX.Y.Z`。如果产物缺失，可用 **CI → Run workflow** 为 `main` 当前提交重新生成；标签和产物必须对应同一提交。
+2. 首次上架前，在 [Marketplace 发布者管理台](https://marketplace.visualstudio.com/manage/publishers/) 的 `ONEGAYI` 下创建 Trusted Publishing 策略：Repository owner 填 `ONEGAYI`，Repository 填 `vsidian-latex-suite`，Workflow 填 `release.yml`，Environment 留空。
+3. 在仓库 **Settings → Secrets and variables → Actions → Variables** 设置 `MARKETPLACE_PUBLISH=true`，Release 才会上传 VSIX 到市场，不需要配置 PAT。要补发已创建的正式 Release，从 **Release → Run workflow** 选择 `main` 并输入原标签；这不会重打包。
 
 ### 移植范围与致谢
 * 本扩展默认片段与宏数据锚定 [Obsidian Latex Suite 1.13.1](https://github.com/artisticat1/obsidian-latex-suite/releases/tag/1.13.1)（MIT 授权，见 [LICENSE](LICENSE)）。
